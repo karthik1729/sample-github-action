@@ -5,11 +5,16 @@ on:
     branches:
       - '**'
 
+
+
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - id: docker-tag
-        uses: yuya-takeyama/docker-tag-from-github-ref-action@v1
-      - name: echo
-        run: echo ${{ steps.docker-tag.outputs.tag }}
+    - name: Get smart tag
+      id: prepare
+      uses: Surgo/docker-smart-tag-action@v1
+      with:
+        docker_image: name/app
+    - name: Build and push
+      run: echo ${{ steps.prepare.outputs.tag }}
